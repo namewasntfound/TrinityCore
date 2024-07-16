@@ -1,7 +1,7 @@
 name: GCC
 
 on:
-  push: ["cata_classic"]
+  push: [ "cata_classic" ]
 
 jobs:
   build:
