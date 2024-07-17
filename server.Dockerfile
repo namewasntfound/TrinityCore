@@ -20,5 +20,6 @@ WORKDIR /home/wowclassic/bin
 RUN make && make -j $(nproc) install
 
 FROM ubuntu:latest
-RUN apt-get install -yq libmysqlclient-dev libssl-dev libbz2-dev libreadline-dev libncurses-dev libboost-all-dev
+RUN apt-get update && \
+    apt-get install -yq libmysqlclient-dev libssl-dev libbz2-dev libreadline-dev libncurses-dev libboost-all-dev
 COPY --from=builder /home/wowclassic/check_install/bin /usr/local
