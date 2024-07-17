@@ -1,8 +1,22 @@
-FROM ubuntu:22.04
+FROM ubuntu:22.04 as builder
 
 RUN apt-get update
 RUN apt-get install -yq git clang cmake make gcc g++ libmysqlclient-dev libssl-dev libbz2-dev libreadline-dev libncurses-dev libboost-all-dev mysql-server p7zip
 RUN update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100
 RUN update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang 100
 
-COPY check_install/bin/* .
+RUN useradd -m wowclassic
+USER wowclassic
+
+WORKDIR /home/wowclassic
+
+COPY . .
+
+RUN cmake -S . -B bin -DCMAKE_INSTALL_PREFIX=check_install -DWITH_WARNINGS=1
+
+WORKDIR /home/wowclassic/bin
+
+RUN make && make -j $(nproc) install
+
+FROM alpine:latest
+COPY --from=builder /home/wowclassic/check_install/bin /usr/local/bin
