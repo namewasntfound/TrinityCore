@@ -21,5 +21,5 @@ RUN make && make -j $(nproc) install
 
 FROM ubuntu:latest
 RUN apt-get update && \
-    apt-get install -yq libmysqlclient-dev libssl-dev libbz2-dev libreadline-dev libncurses-dev libboost-all-dev
+    apt-get install -yq clang cmake make gcc g++ libmysqlclient-dev libssl-dev libbz2-dev libreadline-dev libncurses-dev libboost-all-dev mysql-server p7zip
 COPY --from=builder /home/wowclassic/check_install/bin /usr/local
