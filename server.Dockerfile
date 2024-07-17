@@ -1,9 +1,10 @@
-FROM ubuntu:22.04 as builder
+FROM ubuntu:22.04 AS builder
 
-RUN apt-get update
-RUN apt-get install -yq git clang cmake make gcc g++ libmysqlclient-dev libssl-dev libbz2-dev libreadline-dev libncurses-dev libboost-all-dev mysql-server p7zip
-RUN update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100
-RUN update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang 100
+RUN apt-get update && \
+    apt-get install -yq git clang cmake make gcc g++ libmysqlclient-dev libssl-dev libbz2-dev libreadline-dev libncurses-dev libboost-all-dev mysql-server p7zip
+
+RUN update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100 && \
+    update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang 100
 
 RUN useradd -m wowclassic
 USER wowclassic
@@ -18,5 +19,6 @@ WORKDIR /home/wowclassic/bin
 
 RUN make && make -j $(nproc) install
 
-FROM alpine:latest
-COPY --from=builder /home/wowclassic/check_install/bin /usr/local/bin
+FROM ubuntu:latest
+RUN apt-get install -yq libmysqlclient-dev libssl-dev libbz2-dev libreadline-dev libncurses-dev libboost-all-dev
+COPY --from=builder /home/wowclassic/check_install/bin /usr/local
