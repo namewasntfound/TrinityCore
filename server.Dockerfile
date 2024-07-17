@@ -5,4 +5,4 @@ RUN apt-get install -yq git clang cmake make gcc g++ libmysqlclient-dev libssl-d
 RUN update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100
 RUN update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang 100
 
-COPY check_install/bin .
+COPY check_install/bin/* .

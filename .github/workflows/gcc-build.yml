@@ -42,7 +42,6 @@ jobs:
         cd ${{ github.workspace }}/check_install/bin
         ./bnetserver --version
         ./worldserver --version
-        
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
 
@@ -58,5 +57,6 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v6
       with:
+        file: server.Dockerfile
         push: true
         tags: namewasntfound/wowclassic:latest
